@@ -1,6 +1,7 @@
 pub mod auth;
 pub mod relation;
 pub mod search;
+pub mod tweets;
 pub mod types;
 pub mod types_resp;
 use reqwest::Client;
