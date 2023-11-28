@@ -1,6 +1,6 @@
-use std::error::Error;
 use async_trait::async_trait;
 use serde_json::json;
+use std::error::Error;
 
 use crate::{
     types_resp::{followers_types::FollowersResp, following_types::FollowingResp},
@@ -39,6 +39,7 @@ impl Relation for ReAPI {
             res.data
                 .user
                 .result
+                .unwrap()
                 .timeline
                 .timeline
                 .instructions
@@ -171,7 +172,7 @@ mod test_telation {
 
     #[tokio::test]
     async fn test_get_following() {
-        let uid = "1439140186378567683".to_string();
+        let uid = "1366715769166262279".to_string();
         let mut api = ReAPI::new();
         let _loggined = login(&mut api).await;
         let result = api.get_following(&uid, None).await;

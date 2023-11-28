@@ -16,7 +16,7 @@ pub struct Data {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct User {
     #[serde(rename = "result")]
-    pub result: UserResult,
+    pub result: Option<UserResult>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -112,7 +112,7 @@ pub struct ItemContent {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UserResults {
     #[serde(rename = "result")]
-    pub result: UserResultsResult,
+    pub result: Option<UserResultsResult>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
