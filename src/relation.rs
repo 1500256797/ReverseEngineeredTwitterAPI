@@ -36,10 +36,8 @@ impl Relation for ReAPI {
         while is_continue {
             // if cursor is not empty, then use cursor
             let res: FollowingResp = self.get_following(uid, cursor.clone()).await?;
-            res.data
-                .user
-                .result
-                .unwrap()
+            let result = res.data.user.result.unwrap();
+            result
                 .timeline
                 .timeline
                 .instructions
