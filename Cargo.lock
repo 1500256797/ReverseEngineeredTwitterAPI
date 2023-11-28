@@ -745,19 +745,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "reX"
-version = "0.1.4"
-dependencies = [
- "async-trait",
- "chrono",
- "dotenv",
- "reqwest",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
 name = "redox_syscall"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -803,6 +790,19 @@ dependencies = [
  "wasm-bindgen-futures",
  "web-sys",
  "winreg",
+]
+
+[[package]]
+name = "reverse-engineered-twitter-api"
+version = "0.1.4"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "dotenv",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]
