@@ -3,7 +3,7 @@ use serde_json::json;
 use std::cmp;
 
 use super::{
-    types::{parse_legacy_tweet, Data, Tweet},
+    types::login::{parse_legacy_tweet, Data, Tweet},
     ReAPI,
 };
 
@@ -93,7 +93,7 @@ impl ReAPI {
         cursor: &str,
     ) -> Result<(Vec<Tweet>, String), reqwest::Error> {
         let mut tweets: Vec<Tweet> = vec![];
-        
+
         let search_result = self.search(query, limit, cursor).await;
         let mut cursor = String::from("");
         match search_result {

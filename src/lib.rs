@@ -3,7 +3,6 @@ pub mod relation;
 pub mod search;
 pub mod tweets;
 pub mod types;
-pub mod types_resp;
 use reqwest::Client;
 
 pub const LOGIN_URL: &str = "https://api.twitter.com/1.1/onboarding/task.json";
@@ -26,7 +25,7 @@ pub struct ReAPI {
 #[cfg(test)]
 mod tests {
     use super::{
-        types::{Data, Tweet},
+        types::login::{Data, Tweet},
         *,
     };
 
