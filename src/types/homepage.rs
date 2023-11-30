@@ -4,136 +4,136 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UserHomePage {
     #[serde(rename = "data")]
-    data: Data,
+    pub data: Data,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Data {
     #[serde(rename = "user")]
-    user: User,
+    pub user: User,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct User {
     #[serde(rename = "result")]
-    result: UserResult,
+    pub result: UserResult,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UserResult {
     #[serde(rename = "__typename")]
-    typename: UserDisplayTypeEnum,
+    pub typename: UserDisplayTypeEnum,
 
     #[serde(rename = "timeline_v2")]
-    timeline_v2: TimelineV2,
+    pub timeline_v2: TimelineV2,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TimelineV2 {
     #[serde(rename = "timeline")]
-    timeline: Timeline,
+    pub timeline: Timeline,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Timeline {
     #[serde(rename = "instructions")]
-    instructions: Vec<Instruction>,
+    pub instructions: Vec<Instruction>,
 
     #[serde(rename = "metadata")]
-    metadata: Metadata,
+    pub metadata: Metadata,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Instruction {
     #[serde(rename = "type")]
-    instruction_type: String,
+    pub instruction_type: String,
 
     #[serde(rename = "entry")]
-    entry: Option<PurpleEntry>,
+    pub entry: Option<PurpleEntry>,
 
     #[serde(rename = "entries")]
-    entries: Option<Vec<EntryElement>>,
+    pub entries: Option<Vec<EntryElement>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct EntryElement {
     #[serde(rename = "entryId")]
-    entry_id: String,
+    pub entry_id: String,
 
     #[serde(rename = "sortIndex")]
-    sort_index: String,
+    pub sort_index: String,
 
     #[serde(rename = "content")]
-    content: PurpleContent,
+    pub content: PurpleContent,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PurpleContent {
     #[serde(rename = "entryType")]
-    entry_type: EntryTypeEnum,
+    pub entry_type: EntryTypeEnum,
 
     #[serde(rename = "__typename")]
-    typename: EntryTypeEnum,
+    pub typename: EntryTypeEnum,
 
     #[serde(rename = "itemContent")]
-    item_content: Option<PurpleItemContent>,
+    pub item_content: Option<PurpleItemContent>,
 
     #[serde(rename = "clientEventInfo")]
-    client_event_info: Option<ItemClientEventInfo>,
+    pub client_event_info: Option<ItemClientEventInfo>,
 
     #[serde(rename = "items")]
-    items: Option<Vec<ItemElement>>,
+    pub items: Option<Vec<ItemElement>>,
 
     #[serde(rename = "displayType")]
-    display_type: Option<String>,
+    pub display_type: Option<String>,
 
     #[serde(rename = "header")]
-    header: Option<Header>,
+    pub header: Option<Header>,
 
     #[serde(rename = "footer")]
-    footer: Option<Footer>,
+    pub footer: Option<Footer>,
 
     #[serde(rename = "value")]
-    value: Option<String>,
+    pub value: Option<String>,
 
     #[serde(rename = "cursorType")]
-    cursor_type: Option<String>,
+    pub cursor_type: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ItemClientEventInfo {
     #[serde(rename = "component")]
-    component: String,
+    pub component: String,
 
     #[serde(rename = "element")]
-    element: Option<Element>,
+    pub element: Option<Element>,
 
     #[serde(rename = "details")]
-    details: Details,
+    pub details: Details,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Details {
     #[serde(rename = "timelinesDetails")]
-    timelines_details: TimelinesDetails,
+    pub timelines_details: TimelinesDetails,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TimelinesDetails {
     #[serde(rename = "injectionType")]
-    injection_type: InjectionType,
+    pub injection_type: InjectionType,
 
     #[serde(rename = "controllerData")]
-    controller_data: ControllerData,
+    pub controller_data: String,
 
     #[serde(rename = "sourceData")]
-    source_data: Option<String>,
+    pub source_data: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Footer {
     #[serde(rename = "displayType")]
-    display_type: String,
+    pub display_type: String,
 
     #[serde(rename = "text")]
     text: String,
@@ -172,7 +172,7 @@ pub struct PurpleItemContent {
     typename: ItemTypeEnum,
 
     #[serde(rename = "tweet_results")]
-    tweet_results: PurpleTweetResults,
+    pub tweet_results: PurpleTweetResults,
 
     #[serde(rename = "tweetDisplayType")]
     tweet_display_type: TweetDisplayType,
@@ -181,7 +181,7 @@ pub struct PurpleItemContent {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PurpleTweetResults {
     #[serde(rename = "result")]
-    result: Option<PurpleResult>,
+    pub result: Option<PurpleResult>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -211,7 +211,7 @@ pub struct PurpleResult {
     source: String,
 
     #[serde(rename = "legacy")]
-    legacy: FluffyLegacy,
+    pub legacy: FluffyLegacy,
 
     #[serde(rename = "quick_promote_eligibility")]
     quick_promote_eligibility: QuickPromoteEligibility,
@@ -223,7 +223,7 @@ pub struct PurpleResult {
     unified_card: Option<UnifiedCard>,
 
     #[serde(rename = "quoted_status_result")]
-    quoted_status_result: Option<FluffyQuotedStatusResult>,
+    pub quoted_status_result: Option<FluffyQuotedStatusResult>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -232,7 +232,7 @@ pub struct Card {
     rest_id: String,
 
     #[serde(rename = "legacy")]
-    legacy: CardLegacy,
+    pub legacy: CardLegacy,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -454,7 +454,7 @@ pub struct PurpleLegacy {
     pinned_tweet_ids_str: Vec<String>,
 
     #[serde(rename = "possibly_sensitive")]
-    possibly_sensitive: bool,
+    possibly_sensitive: Option<bool>,
 
     #[serde(rename = "profile_banner_url")]
     profile_banner_url: Option<String>,
@@ -526,10 +526,10 @@ pub struct EditControlInitialClass {
     editable_until_msecs: Option<String>,
 
     #[serde(rename = "is_edit_eligible")]
-    is_edit_eligible: bool,
+    is_edit_eligible: Option<bool>,
 
     #[serde(rename = "edits_remaining")]
-    edits_remaining: String,
+    edits_remaining: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -559,7 +559,7 @@ pub struct FluffyLegacy {
     favorited: bool,
 
     #[serde(rename = "full_text")]
-    full_text: String,
+    pub full_text: String,
 
     #[serde(rename = "is_quote_status")]
     is_quote_status: bool,
@@ -1183,7 +1183,7 @@ pub struct StickyLegacy {
     pinned_tweet_ids_str: Vec<Option<serde_json::Value>>,
 
     #[serde(rename = "possibly_sensitive")]
-    possibly_sensitive: bool,
+    possibly_sensitive: Option<bool>,
 
     #[serde(rename = "profile_banner_url")]
     profile_banner_url: String,
@@ -1471,7 +1471,7 @@ pub struct PurpleEntry {
     sort_index: String,
 
     #[serde(rename = "content")]
-    content: FluffyContent,
+    pub content: FluffyContent,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -1483,7 +1483,7 @@ pub struct FluffyContent {
     typename: EntryTypeEnum,
 
     #[serde(rename = "itemContent")]
-    item_content: FluffyItemContent,
+    pub item_content: FluffyItemContent,
 
     #[serde(rename = "clientEventInfo")]
     client_event_info: PurpleClientEventInfo,
@@ -1507,7 +1507,7 @@ pub struct FluffyItemContent {
     typename: ItemTypeEnum,
 
     #[serde(rename = "tweet_results")]
-    tweet_results: FluffyTweetResults,
+    pub tweet_results: FluffyTweetResults,
 
     #[serde(rename = "tweetDisplayType")]
     tweet_display_type: TweetDisplayType,
@@ -1519,7 +1519,7 @@ pub struct FluffyItemContent {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct FluffyTweetResults {
     #[serde(rename = "result")]
-    result: AmbitiousResult,
+    pub result: AmbitiousResult,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -1540,7 +1540,7 @@ pub struct AmbitiousResult {
     unmention_data: UnmentionData,
 
     #[serde(rename = "unified_card")]
-    unified_card: UnifiedCard,
+    unified_card: Option<UnifiedCard>,
 
     #[serde(rename = "edit_control")]
     edit_control: EditControlInitialClass,
@@ -1555,7 +1555,7 @@ pub struct AmbitiousResult {
     source: String,
 
     #[serde(rename = "legacy")]
-    legacy: IndecentLegacy,
+    pub legacy: IndecentLegacy,
 
     #[serde(rename = "quick_promote_eligibility")]
     quick_promote_eligibility: QuickPromoteEligibility,
@@ -1588,7 +1588,7 @@ pub struct IndecentLegacy {
     favorited: bool,
 
     #[serde(rename = "full_text")]
-    full_text: String,
+    pub full_text: String,
 
     #[serde(rename = "is_quote_status")]
     is_quote_status: bool,
@@ -1597,10 +1597,10 @@ pub struct IndecentLegacy {
     lang: String,
 
     #[serde(rename = "possibly_sensitive")]
-    possibly_sensitive: bool,
+    possibly_sensitive: Option<bool>,
 
     #[serde(rename = "possibly_sensitive_editable")]
-    possibly_sensitive_editable: bool,
+    possibly_sensitive_editable: Option<bool>,
 
     #[serde(rename = "quote_count")]
     quote_count: i64,
@@ -1642,20 +1642,20 @@ pub struct ScribeConfig {
 //     Tweet,
 // }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub enum ControllerData {
-    #[serde(rename = "DAACDAABDAABCgABAAAAAAAAAAAKAAkT+Npf5xWAAwAAAAA=")]
-    DaacdaabdaabCgAbaaaaaaaaaaakaAkTNpf5XWaAwAaaaa,
+// #[derive(Serialize, Deserialize, Debug)]
+// pub enum ControllerData {
+//     #[serde(rename = "DAACDAABDAABCgABAAAAAAAAAAAKAAkT+Npf5xWAAwAAAAA=")]
+//     DaacdaabdaabCgAbaaaaaaaaaaakaAkTNpf5XWaAwAaaaa,
 
-    #[serde(rename = "DAACDAACDAABCgABAAAAAAAAAAgAAAAA")]
-    DaacdaacdaabCgAbaaaaaaaaaAgAaaaa,
+//     #[serde(rename = "DAACDAACDAABCgABAAAAAAAAAAgAAAAA")]
+//     DaacdaacdaabCgAbaaaaaaaaaAgAaaaa,
 
-    #[serde(rename = "DAACDAACDAABCgABAAAAAAAAABAAAAAA")]
-    DaacdaacdaabCgAbaaaaaaaaabaaaaaa,
+//     #[serde(rename = "DAACDAACDAABCgABAAAAAAAAABAAAAAA")]
+//     DaacdaacdaabCgAbaaaaaaaaabaaaaaa,
 
-    #[serde(rename = "DAACDAACDAABCgABAAAAAAAAAEAAAAAA")]
-    DaacdaacdaabCgAbaaaaaaaaaeaaaaaa,
-}
+//     #[serde(rename = "DAACDAACDAABCgABAAAAAAAAAEAAAAAA")]
+//     DaacdaacdaabCgAbaaaaaaaaaeaaaaaa,
+// }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum InjectionType {

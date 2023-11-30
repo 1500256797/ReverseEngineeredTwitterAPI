@@ -112,7 +112,7 @@ pub struct TimelinesDetails {
     injection_type: InjectionType,
 
     #[serde(rename = "controllerData")]
-    controller_data: ControllerData,
+    controller_data: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -199,7 +199,7 @@ pub struct FluffyResult {
     typename: Typename,
 
     #[serde(rename = "id")]
-    id: Id,
+    id: String,
 
     #[serde(rename = "rest_id")]
     rest_id: String,
@@ -1273,11 +1273,11 @@ pub enum Ent {
     Tweet,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub enum ControllerData {
-    #[serde(rename = "DAACDAABDAABCgABAAAAAAAAAAAKAAkT+Npf5xWAAwAAAAA=")]
-    DaacdaabdaabCgAbaaaaaaaaaaakaAkTNpf5XWaAwAaaaa,
-}
+// #[derive(Serialize, Deserialize, Debug)]
+// pub enum ControllerData {
+//     #[serde(rename = "DAACDAABDAABCgABAAAAAAAAAAAKAAkT+Npf5xWAAwAAAAA=")]
+//     DaacdaabdaabCgAbaaaaaaaaaaakaAkTNpf5XWaAwAaaaa,
+// }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum InjectionType {
@@ -1306,11 +1306,11 @@ pub enum TweetDisplayType {
     Tweet,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Id {
-    #[serde(rename = "VXNlcjoxNTY5ODg2NzgzMDg5MDI5MTIy")]
-    VxNlcjoxNty5ODg2NzgzMDg5Mdi5MtIy,
-}
+// #[derive(Serialize, Deserialize, Debug)]
+// pub enum Id {
+//     #[serde(rename = "VXNlcjoxNTY5ODg2NzgzMDg5MDI5MTIy")]
+//     VxNlcjoxNty5ODg2NzgzMDg5Mdi5MtIy,
+// }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum TranslatorType {
