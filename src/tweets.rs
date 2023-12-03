@@ -11,7 +11,11 @@ use crate::{
 pub trait UserTweets {
     async fn get_user_homepage(&self, uid: &String) -> Result<UserHomePage, Box<dyn Error>>;
     async fn get_user_tweets(&self, uid: &String) -> Result<UserTweetsResp, Box<dyn Error>>;
-    async fn get_user_latest_tweets(&self, uid: &String) -> Result<(), Box<dyn Error>>;
+    async fn get_user_latest_tweets(
+        &self,
+        uid: &String,
+        message: &String,
+    ) -> Result<bool, Box<dyn Error>>;
 }
 
 #[async_trait]
@@ -46,7 +50,11 @@ impl UserTweets for ReAPI {
         let res: UserHomePage = serde_json::from_str(&text).unwrap();
         return Ok(res);
     }
-    async fn get_user_latest_tweets(&self, uid: &String) -> Result<(), Box<dyn Error>> {
+    async fn get_user_latest_tweets(
+        &self,
+        uid: &String,
+        message: &String,
+    ) -> Result<bool, Box<dyn Error>> {
         let variables = json!(
             {"userId":uid.to_string(),"count":20,"includePromotedContent":true,"withQuickPromoteEligibilityTweetFields":true,"withVoice":true,"withV2Timeline":true}
         );
@@ -93,11 +101,17 @@ impl UserTweets for ReAPI {
                 if let Some(item) = content {
                     let full_text = item.tweet_results.result.unwrap().legacy.full_text;
                     println!("{}: {}", twitter_id, full_text);
+                    // check if content contains the content
+                    if full_text.contains(message.as_str()) {
+                        return Ok(true);
+                    } else {
+                        return Ok(false);
+                    }
                 }
             }
         }
 
-        Ok(())
+        Ok(true)
     }
     async fn get_user_tweets(&self, uid: &String) -> Result<UserTweetsResp, Box<dyn Error>> {
         let variables = json!(
@@ -165,7 +179,8 @@ mod test_telation {
         let mut api = ReAPI::new();
         let _loggined = login(&mut api).await;
         let uid = "1507631541303713793".to_string();
-        let result = api.get_user_latest_tweets(&uid).await;
+        let message = "Port3".to_string();
+        let result = api.get_user_latest_tweets(&uid, &message).await;
         println!("result {:?}", result);
     }
 }
