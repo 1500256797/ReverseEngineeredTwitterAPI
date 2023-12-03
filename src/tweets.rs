@@ -178,8 +178,8 @@ mod test_telation {
     async fn test_get_user_latest_tweets() {
         let mut api = ReAPI::new();
         let _loggined = login(&mut api).await;
-        let uid = "1507631541303713793".to_string();
-        let message = "Port3".to_string();
+        let uid = "1439140186378567683".to_string();
+        let message = "#RIDO".to_string();
         let result = api.get_user_latest_tweets(&uid, &message).await;
         println!("result {:?}", result);
     }

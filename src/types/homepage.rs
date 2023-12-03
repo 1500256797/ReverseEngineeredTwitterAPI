@@ -22,7 +22,7 @@ pub struct User {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UserResult {
     #[serde(rename = "__typename")]
-    pub typename: UserDisplayTypeEnum,
+    pub typename: String,
 
     #[serde(rename = "timeline_v2")]
     pub timeline_v2: TimelineV2,
@@ -268,7 +268,7 @@ pub struct Value {
     image_value: Option<ImageValue>,
 
     #[serde(rename = "type")]
-    value_type: ValueType,
+    value_type: String,
 
     #[serde(rename = "string_value")]
     string_value: Option<String>,
@@ -364,7 +364,7 @@ pub struct PurpleUserResults {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct FluffyResult {
     #[serde(rename = "__typename")]
-    typename: UserDisplayTypeEnum,
+    typename: String,
 
     #[serde(rename = "id")]
     id: String,
@@ -382,7 +382,7 @@ pub struct FluffyResult {
     is_blue_verified: bool,
 
     #[serde(rename = "profile_image_shape")]
-    profile_image_shape: ProfileImageShape,
+    profile_image_shape: String,
 
     #[serde(rename = "legacy")]
     legacy: PurpleLegacy,
@@ -652,7 +652,7 @@ pub struct Media {
     media_url_https: String,
 
     #[serde(rename = "type")]
-    media_type: MediaType,
+    media_type: String,
 
     #[serde(rename = "url")]
     url: String,
@@ -691,7 +691,7 @@ pub struct AdditionalMediaInfo {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ExtMediaAvailability {
     #[serde(rename = "status")]
-    status: Status,
+    status: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -766,7 +766,7 @@ pub struct ThumbClass {
     w: i64,
 
     #[serde(rename = "resize")]
-    resize: Resize,
+    resize: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -889,7 +889,7 @@ pub struct ItemContentUserResults {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TentacledResult {
     #[serde(rename = "__typename")]
-    typename: UserDisplayTypeEnum,
+    typename: String,
 
     #[serde(rename = "id")]
     id: String,
@@ -907,7 +907,7 @@ pub struct TentacledResult {
     is_blue_verified: bool,
 
     #[serde(rename = "profile_image_shape")]
-    profile_image_shape: ProfileImageShape,
+    profile_image_shape: String,
 
     #[serde(rename = "legacy")]
     legacy: PurpleLegacy,
@@ -1099,7 +1099,7 @@ pub struct FluffyUserResults {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct IndigoResult {
     #[serde(rename = "__typename")]
-    typename: UserDisplayTypeEnum,
+    typename: String,
 
     #[serde(rename = "id")]
     id: String,
@@ -1117,7 +1117,7 @@ pub struct IndigoResult {
     is_blue_verified: bool,
 
     #[serde(rename = "profile_image_shape")]
-    profile_image_shape: ProfileImageShape,
+    profile_image_shape: String,
 
     #[serde(rename = "legacy")]
     legacy: StickyLegacy,
@@ -1288,7 +1288,7 @@ pub struct Views {
     count: Option<String>,
 
     #[serde(rename = "state")]
-    state: State,
+    state: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -1300,7 +1300,7 @@ pub struct UnifiedCard {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct QuickPromoteEligibility {
     #[serde(rename = "eligibility")]
-    eligibility: Eligibility,
+    eligibility: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -1357,7 +1357,7 @@ pub struct TentacledUserResults {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct HilariousResult {
     #[serde(rename = "__typename")]
-    typename: UserDisplayTypeEnum,
+    typename: String,
 
     #[serde(rename = "id")]
     id: String,
@@ -1375,7 +1375,7 @@ pub struct HilariousResult {
     is_blue_verified: bool,
 
     #[serde(rename = "profile_image_shape")]
-    profile_image_shape: ProfileImageShape,
+    profile_image_shape: String,
 
     #[serde(rename = "legacy")]
     legacy: PurpleLegacy,
@@ -1444,7 +1444,7 @@ pub struct ItemItemContent {
     user_results: Option<ItemContentUserResults>,
 
     #[serde(rename = "userDisplayType")]
-    user_display_type: Option<UserDisplayTypeEnum>,
+    user_display_type: Option<String>,
 
     #[serde(rename = "socialContext")]
     social_context: Option<SocialContext>,
@@ -1697,100 +1697,4 @@ pub enum ItemTypeEnum {
 pub enum TweetDisplayType {
     #[serde(rename = "Tweet")]
     Tweet,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum ValueType {
-    #[serde(rename = "IMAGE")]
-    Image,
-
-    #[serde(rename = "IMAGE_COLOR")]
-    ImageColor,
-
-    #[serde(rename = "STRING")]
-    String,
-}
-
-// #[derive(Serialize, Deserialize, Debug)]
-// pub enum Id {
-//     // #[serde(rename = "VXNlcjoxNDk4Mzg0MDE4MTYwNjMxODEw")]
-//     VxNlcjoxNDk4Mzg0Mde4MtYwNjMxOdEw,
-// }
-
-// #[derive(Serialize, Deserialize, Debug)]
-// pub enum TranslatorType {
-//     #[serde(rename = "none")]
-//     None,
-// }
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum ProfileImageShape {
-    #[serde(rename = "Circle")]
-    Circle,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum UserDisplayTypeEnum {
-    #[serde(rename = "User")]
-    User,
-}
-
-// #[derive(Serialize, Deserialize, Debug)]
-// pub enum Text {
-//     #[serde(rename = "Bitcoin")]
-//     Bitcoin,
-
-//     #[serde(rename = "TitanX")]
-//     TitanX,
-
-//     #[serde(rename = "TITANX")]
-//     Titanx,
-// }
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Status {
-    #[serde(rename = "Available")]
-    Available,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum MediaType {
-    #[serde(rename = "photo")]
-    Photo,
-
-    #[serde(rename = "video")]
-    Video,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Resize {
-    #[serde(rename = "crop")]
-    Crop,
-
-    #[serde(rename = "fit")]
-    Fit,
-}
-
-// #[derive(Serialize, Deserialize, Debug)]
-// pub enum Lang {
-//     #[serde(rename = "en")]
-//     En,
-
-//     #[serde(rename = "zxx")]
-//     Zxx,
-// }
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum State {
-    #[serde(rename = "Enabled")]
-    Enabled,
-
-    #[serde(rename = "EnabledWithCount")]
-    EnabledWithCount,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Eligibility {
-    #[serde(rename = "IneligibleNotProfessional")]
-    IneligibleNotProfessional,
 }
