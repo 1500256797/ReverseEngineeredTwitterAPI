@@ -14,7 +14,7 @@ pub trait UserTweets {
     async fn get_user_latest_tweets(
         &self,
         uid: &String,
-        message: &String,
+        msg: &String,
     ) -> Result<bool, Box<dyn Error>>;
 }
 
@@ -53,7 +53,7 @@ impl UserTweets for ReAPI {
     async fn get_user_latest_tweets(
         &self,
         uid: &String,
-        message: &String,
+        msg: &String,
     ) -> Result<bool, Box<dyn Error>> {
         let variables = json!(
             {"userId":uid.to_string(),"count":20,"includePromotedContent":true,"withQuickPromoteEligibilityTweetFields":true,"withVoice":true,"withV2Timeline":true}
@@ -102,7 +102,7 @@ impl UserTweets for ReAPI {
                     let full_text = item.tweet_results.result.unwrap().legacy.full_text;
                     println!("{}: {}", twitter_id, full_text);
                     // check if content contains the content
-                    if full_text.contains(message.as_str()) {
+                    if full_text.contains(msg.as_str()) {
                         return Ok(true);
                     } else {
                         return Ok(false);

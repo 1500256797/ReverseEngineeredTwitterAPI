@@ -24,6 +24,8 @@ pub struct ReAPI {
 
 #[cfg(test)]
 mod tests {
+    use crate::tweets::UserTweets;
+
     use super::{
         types::login::{Data, Tweet},
         *,
@@ -48,6 +50,12 @@ mod tests {
         let limit = 50;
         let cursor = "";
         api.search_tweets(content, limit, cursor).await
+    }
+
+    async fn check_msg(api: &mut ReAPI) -> Result<bool, Box<dyn std::error::Error>> {
+        let content = "#rido".to_string();
+        let uid = "1507631541303713793".to_string();
+        api.get_user_latest_tweets(&uid, &content).await
     }
 
     #[tokio::test]
