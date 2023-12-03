@@ -77,6 +77,7 @@ impl ReAPI {
     }
     async fn get_flow(&mut self, body: serde_json::Value) -> Result<Flow, Error> {
         if self.guest_token.is_empty() {
+            // generate guest token for login
             self.get_guest_token().await?
         }
         let res = self
@@ -138,6 +139,7 @@ impl ReAPI {
                 let op = r.json::<serde_json::Value>().await?;
                 let guest_token = op.get("guest_token");
                 if let Some(guest_token) = guest_token {
+                    // set guest token for reapi instance
                     self.guest_token = guest_token.to_string();
                     return Ok(());
                 }
@@ -146,7 +148,6 @@ impl ReAPI {
             Err(e) => Err(e),
         }
     }
-
     pub async fn login(
         &mut self,
         user_name: &str,
