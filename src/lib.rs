@@ -17,14 +17,35 @@ pub const APP_CONSUMER_SECRET: &str = "Bcs59EFbbsdF6Sl9Ng71smgStWEGwXXKSjYvPVt7q
 
 #[derive(Debug, Clone)]
 pub struct ReAPI {
-    client: Client,
-    guest_token: String,
-    csrf_token: String,
+    pub client: Client,
+    pub guest_token: String,
+    pub csrf_token: String,
+}
+
+impl ReAPI {
+    // set csrf_token
+    pub fn set_csrf_token(&mut self, csrf_token: String) {
+        self.csrf_token = csrf_token;
+    }
+
+    // set gust_token
+    pub fn set_guest_token(&mut self, guest_token: String) {
+        self.guest_token = guest_token;
+    }
+
+    // set client
+    pub fn set_client(&mut self, client: Client) {
+        self.client = client;
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::tweets::UserTweets;
+    use std::sync::Arc;
+
+    use reqwest::Url;
+
+    use crate::{relation::Relation, tweets::UserTweets};
 
     use super::{
         types::login::{Data, Tweet},
@@ -75,5 +96,16 @@ mod tests {
 
         // let (tweets, _) = res.unwrap();
         // assert!(tweets.len() == 0);
+    }
+
+    #[tokio::test]
+    async fn test_load_csrf_from_file() {
+        let mut api = ReAPI::new();
+        let loggined = login(&mut api).await;
+
+        // let mut api = ReAPI::load_from_cookies().unwrap();
+        // let uid = "1507631541303713793".to_string();
+        // let result = api.get_user_homepage(&uid).await;
+        // println!("result {:?}", result);
     }
 }

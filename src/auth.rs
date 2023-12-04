@@ -1,8 +1,17 @@
-use std::io::ErrorKind;
+use std::{
+    fs::File,
+    io::{ErrorKind, Read, Write},
+    sync::Arc,
+};
 
 use super::{ReAPI, BEARER_TOKEN, GUEST_ACTIVE_URL, LOGIN_URL, VERIFY_CREDENTIALS_URL};
-use reqwest::{self, Error};
-use serde::Deserialize;
+use chrono::format;
+use reqwest::{
+    self,
+    cookie::{Cookie, Jar},
+    ClientBuilder, Error, Response, Url,
+};
+use serde::{Deserialize, Serialize};
 use serde_json::{self, json};
 
 #[derive(Deserialize)]
@@ -63,6 +72,41 @@ pub struct VerifyCredentials {
     pub errors: Option<Vec<ApiError>>,
 }
 
+#[derive(Serialize, Deserialize, Clone, Debug)]
+struct CookieData {
+    name: String,
+    value: String,
+}
+
+fn save_cookies_to_file(
+    response: &Response,
+    file_path: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
+    // Get the cookies from the response
+    let cookies = response.cookies();
+
+    // Serialize the cookies into JSON format
+    // Convert cookies into a serializable data structure
+    let cookie_data: Vec<CookieData> = cookies
+        .map(|cookie| CookieData {
+            name: cookie.name().to_string(),
+            value: cookie.value().to_string(),
+            // Add any other fields you need from the cookie
+        })
+        .collect();
+
+    // Serialize the cookie data into JSON format
+    let serialized_cookies = serde_json::to_string(&cookie_data)?;
+
+    // Open the file for writing
+    let mut file = File::create(file_path)?;
+
+    // Write the serialized cookies to the file
+    file.write_all(serialized_cookies.as_bytes())?;
+
+    Ok(())
+}
+
 impl ReAPI {
     pub fn new() -> ReAPI {
         let client = reqwest::ClientBuilder::new()
@@ -75,6 +119,52 @@ impl ReAPI {
             guest_token: String::from(""),
         };
     }
+
+    pub fn load_from_cookies() -> Result<ReAPI, Box<dyn std::error::Error>> {
+        let file_path = "cookies.json";
+
+        // Load the cookies from the file
+        // Open the file for reading
+        let mut file = File::open(file_path)?;
+
+        // Read the contents of the file into a string
+        let mut cookies_json = String::new();
+        file.read_to_string(&mut cookies_json)?;
+
+        // Deserialize the cookies from JSON format
+        let cookies: Vec<CookieData> = serde_json::from_str(&cookies_json)?;
+        let mut csrf_token = "".to_string();
+        // Create a new cookie jar and add the cookies to it
+        let cookie_jar = reqwest::cookie::Jar::default();
+        for cookie in cookies {
+            // cookie = "foo=bar; Domain=yolo.local";
+            if cookie.name.eq("ct0") {
+                csrf_token = cookie.clone().value;
+            }
+            let cookie_str = format!("{}={}; Domain=twitter.com", cookie.name, cookie.value);
+            let url = Url::parse("https://twitter.com")?;
+            cookie_jar.add_cookie_str(&cookie_str, &url);
+        }
+
+        // Create a reqwest client builder
+        let cookie_jar_arc = Arc::new(cookie_jar);
+        let client_builder = ClientBuilder::new().cookie_provider(cookie_jar_arc);
+        // Build the client
+        let client = match client_builder.build() {
+            Ok(client) => client,
+            Err(err) => {
+                eprintln!("Error building client: {}", err);
+                return Err(err.into());
+            }
+        };
+
+        Ok(ReAPI {
+            client,
+            csrf_token: csrf_token.to_string(),
+            guest_token: String::from(""),
+        })
+    }
+
     async fn get_flow(&mut self, body: serde_json::Value) -> Result<Flow, Error> {
         if self.guest_token.is_empty() {
             // generate guest token for login
@@ -93,6 +183,8 @@ impl ReAPI {
             .json(&body)
             .send()
             .await?;
+        // save cookies to file
+        save_cookies_to_file(&res, "cookies.json");
 
         let cookies = res.cookies();
         for cookie in cookies {
@@ -284,6 +376,7 @@ impl ReAPI {
         let res = self.client.execute(req).await.unwrap();
         let cookies = res.cookies();
         for cookie in cookies {
+            println!("Name: {}, Value: {}", cookie.name(), cookie.value());
             if cookie.name().eq("ct0") {
                 self.csrf_token = cookie.value().to_string()
             }
@@ -291,5 +384,25 @@ impl ReAPI {
         let text = res.text().await.unwrap();
         let res: VerifyCredentials = serde_json::from_str(&text).unwrap();
         res.errors.is_none()
+    }
+
+    pub async fn get_csrf_token(&mut self) -> Result<String, Box<dyn std::error::Error>> {
+        let req = self
+            .client
+            .get(VERIFY_CREDENTIALS_URL)
+            .header("Authorization", format!("Bearer {}", BEARER_TOKEN))
+            .header("X-CSRF-Token", self.csrf_token.to_owned())
+            .build()
+            .unwrap();
+        let res = self.client.execute(req).await.unwrap();
+        let cookies = res.cookies();
+        for cookie in cookies {
+            println!("Name: {}, Value: {}", cookie.name(), cookie.value());
+            // if cookie.name().eq("ct0") {
+            //     self.csrf_token = cookie.value().to_string();
+            //     return Ok(self.csrf_token.clone());
+            // }
+        }
+        Ok("".to_owned())
     }
 }
