@@ -103,9 +103,9 @@ mod tests {
         let mut api = ReAPI::new();
         let loggined = login(&mut api).await;
 
-        // let mut api = ReAPI::load_from_cookies().unwrap();
-        // let uid = "1507631541303713793".to_string();
-        // let result = api.get_user_homepage(&uid).await;
-        // println!("result {:?}", result);
+        let mut api = ReAPI::load_from_cookies().unwrap();
+        let uid = "1507631541303713793".to_string();
+        let result = api.get_user_homepage(&uid).await;
+        println!("result {:?}", result);
     }
 }
