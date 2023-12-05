@@ -1,75 +1,101 @@
-use crate::BEARER_TOKEN;
-use serde_json::json;
-use std::cmp;
-
 use super::{
     types::login::{parse_legacy_tweet, Data, Tweet},
     ReAPI,
 };
+use crate::{
+    types::{
+        search::Search,
+        tweets_analysis::{self, TweetsAnalysis},
+    },
+    BEARER_TOKEN,
+};
+use anyhow::Ok;
+use serde_json::json;
 
-const SEARCH_URL: &str = "https://twitter.com/i/api/graphql/nK1dw4oV3k4w5TdtcAdSww/SearchTimeline";
+const SEARCH_URL: &str = "https://twitter.com/i/api/graphql/lMv4QkY3vpla38q9tiD-tA/SearchTimeline";
 
 impl ReAPI {
+    pub async fn search_tweets_analysis(
+        &self,
+        query: &str,
+        cursor: &str,
+    ) -> std::result::Result<Vec<TweetsAnalysis>, anyhow::Error> {
+        let search_result = self.search(query, cursor).await.unwrap();
+        let instructions = search_result
+            .data
+            .search_by_raw_query
+            .search_timeline
+            .timeline
+            .instructions
+            .unwrap();
+
+        let mut tweets_analysis: Vec<TweetsAnalysis> = vec![];
+
+        for item in instructions {
+            if item.entries.is_none() {
+                continue;
+            }
+            let entrys = item.entries.unwrap();
+            for entry in entrys {
+                let content = entry.content;
+                if content.item_content.is_none() {
+                    continue;
+                }
+                let item_content = content.item_content.unwrap();
+                let tweets_result = item_content.tweet_results;
+                let result = tweets_result.result;
+                let views = result.views;
+                let legacy = result.legacy;
+                if item_content.promoted_metadata.is_none() {
+                    continue;
+                }
+                let advertiser_results_result = item_content
+                    .promoted_metadata
+                    .unwrap()
+                    .advertiser_results
+                    .result;
+                let tweets_analysis_item = TweetsAnalysis {
+                    views,
+                    legacy,
+                    user_result: advertiser_results_result,
+                };
+                tweets_analysis.push(tweets_analysis_item);
+            }
+        }
+
+        Ok(tweets_analysis)
+    }
+
     pub async fn search(
         &self,
         query: &str,
-        limit: u8,
         cursor: &str,
-    ) -> std::result::Result<Data, reqwest::Error> {
-        let limit = cmp::min(50u8, limit);
-
+    ) -> std::result::Result<Search, anyhow::Error> {
         let mut variables = json!(
             {
                 "rawQuery":     query.to_string(),
-                "count":        limit,
-                "querySource":  "typed_query",
+                "count":        20,
+                "querySource":  "recent_search_click",
                 "product":      "Top"
             }
         );
         let features = json!(
-            {
-                "rweb_lists_timeline_redesign_enabled":                                    true,
-                "responsive_web_graphql_exclude_directive_enabled":                        true,
-                "verified_phone_label_enabled":                                            false,
-                "creator_subscriptions_tweet_preview_api_enabled":                         true,
-                "responsive_web_graphql_timeline_navigation_enabled":                      true,
-                "responsive_web_graphql_skip_user_profile_image_extensions_enabled":       false,
-                "tweetypie_unmention_optimization_enabled":                                true,
-                "responsive_web_edit_tweet_api_enabled":                                   true,
-                "graphql_is_translatable_rweb_tweet_is_translatable_enabled":              true,
-                "view_counts_everywhere_api_enabled":                                      true,
-                "longform_notetweets_consumption_enabled":                                 true,
-                "responsive_web_twitter_article_tweet_consumption_enabled":                false,
-                "tweet_awards_web_tipping_enabled":                                        false,
-                "freedom_of_speech_not_reach_fetch_enabled":                               true,
-                "standardized_nudges_misinfo":                                             true,
-                "tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled": true,
-                "longform_notetweets_rich_text_read_enabled":                              true,
-                "longform_notetweets_inline_media_enabled":                                true,
-                "responsive_web_media_download_video_enabled":                             false,
-                "responsive_web_enhance_cards_enabled":                                    false,
-            }
-        );
-        let field_toggles = json!(
-            {
-                "withArticleRichContentState": false
-            }
+            {"responsive_web_graphql_exclude_directive_enabled":true,"verified_phone_label_enabled":false,"responsive_web_home_pinned_timelines_enabled":true,"creator_subscriptions_tweet_preview_api_enabled":true,"responsive_web_graphql_timeline_navigation_enabled":true,"responsive_web_graphql_skip_user_profile_image_extensions_enabled":false,"c9s_tweet_anatomy_moderator_badge_enabled":true,"tweetypie_unmention_optimization_enabled":true,"responsive_web_edit_tweet_api_enabled":true,"graphql_is_translatable_rweb_tweet_is_translatable_enabled":true,"view_counts_everywhere_api_enabled":true,"longform_notetweets_consumption_enabled":true,"responsive_web_twitter_article_tweet_consumption_enabled":false,"tweet_awards_web_tipping_enabled":false,"freedom_of_speech_not_reach_fetch_enabled":true,"standardized_nudges_misinfo":true,"tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled":true,"longform_notetweets_rich_text_read_enabled":true,"longform_notetweets_inline_media_enabled":true,"responsive_web_media_download_video_enabled":false,"responsive_web_enhance_cards_enabled":false}
         );
         if cursor.ne("") {
             variables["cursor"] = cursor.to_string().into();
         }
-        variables["product"] = "Latest".into();
-        let q = [
+        // variables["product"] = "Latest".into();
+        let query_params = [
             ("variables", variables.to_string()),
             ("features", features.to_string()),
-            ("fieldToggles", field_toggles.to_string()),
         ];
         let req = self
             .client
             .get(SEARCH_URL)
             .header("Authorization", format!("Bearer {}", BEARER_TOKEN))
             .header("X-CSRF-Token", self.csrf_token.to_owned())
-            .query(&q)
+            .query(&query_params)
             .build()
             .unwrap();
         let text = self
@@ -80,75 +106,7 @@ impl ReAPI {
             .text()
             .await
             .unwrap();
-
-        println!("text:{}", text);
-        let res: Data = serde_json::from_str(&text).unwrap();
+        let res: Search = serde_json::from_str(&text).unwrap();
         return Ok(res);
-    }
-
-    pub async fn search_tweets(
-        &self,
-        query: &str,
-        limit: u8,
-        cursor: &str,
-    ) -> Result<(Vec<Tweet>, String), reqwest::Error> {
-        let mut tweets: Vec<Tweet> = vec![];
-
-        let search_result = self.search(query, limit, cursor).await;
-        let mut cursor = String::from("");
-        match search_result {
-            Ok(res) => {
-                let instructions = res
-                    .data
-                    .search_by_raw_query
-                    .search_timeline
-                    .timeline
-                    .instructions
-                    .unwrap();
-                for item in instructions {
-                    if item.instruction_type.ne("TimelineAddEntries")
-                        && item.instruction_type.ne("TimelineReplaceEntry")
-                    {
-                        continue;
-                    }
-                    if item.entry.is_some() {
-                        let entry = item.entry.unwrap();
-                        let cursor_type = entry.content.cursor_type.unwrap_or("".to_string());
-                        if cursor_type.eq("Bottom") {
-                            if entry.content.value.is_some() {
-                                cursor = entry.content.value.unwrap();
-                                continue;
-                            }
-                        }
-                    }
-                    for entry in item.entries {
-                        if entry.content.item_content.is_none() {
-                            continue;
-                        }
-                        let item = entry.content.item_content.unwrap();
-                        if item.tweet_display_type.eq("Tweet") {
-                            let core = item.tweet_results.result.core;
-                            if core.is_none() {
-                                continue;
-                            }
-                            let u = core.unwrap().user_results.result.legacy.unwrap();
-                            let t = item.tweet_results.result.legacy;
-                            if let Some(tweet) = parse_legacy_tweet(&u, &t) {
-                                tweets.push(tweet)
-                            }
-                        } else if entry
-                            .content
-                            .cursor_type
-                            .unwrap_or("".to_string())
-                            .eq("Bottom")
-                        {
-                            cursor = entry.content.value.unwrap();
-                        }
-                    }
-                }
-                Ok((tweets, cursor))
-            }
-            Err(e) => Err(e),
-        }
     }
 }

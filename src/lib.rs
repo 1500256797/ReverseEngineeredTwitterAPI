@@ -44,8 +44,13 @@ mod tests {
     use std::sync::Arc;
 
     use reqwest::Url;
+    use serde_json::json;
 
-    use crate::{relation::Relation, tweets::UserTweets};
+    use crate::{
+        relation::Relation,
+        tweets::UserTweets,
+        types::{search::Search, tweets_analysis::TweetsAnalysis},
+    };
 
     use super::{
         types::login::{Data, Tweet},
@@ -59,18 +64,16 @@ mod tests {
         api.login(&name, &pwd, "").await
     }
 
-    async fn search(api: &mut ReAPI) -> Result<Data, reqwest::Error> {
-        let content = "@shareverse_bot";
-        let limit = 50;
+    async fn search(api: &mut ReAPI) -> Result<Search, anyhow::Error> {
+        let content = "#MemeLand";
         let cursor = "";
-        api.search(content, limit, cursor).await
+        api.search(content, cursor).await
     }
 
-    async fn search_tweets(api: &mut ReAPI) -> Result<(Vec<Tweet>, String), reqwest::Error> {
-        let content = "@shareverse_bot";
-        let limit = 50;
+    async fn search_tweets_analysis(api: &mut ReAPI) -> Result<Vec<TweetsAnalysis>, anyhow::Error> {
+        let content = "#MemeLand";
         let cursor = "";
-        api.search_tweets(content, limit, cursor).await
+        api.search_tweets_analysis(content, cursor).await
     }
 
     async fn check_msg(api: &mut ReAPI) -> Result<bool, Box<dyn std::error::Error>> {
@@ -99,13 +102,15 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_load_csrf_from_file() {
-        let mut api = ReAPI::new();
-        let loggined = login(&mut api).await;
+    async fn test_new_from_cookies_file() {
+        // let mut api = ReAPI::new();
+        // let loggined = login(&mut api).await;
 
         let mut api = ReAPI::load_from_cookies().unwrap();
-        let uid = "1507631541303713793".to_string();
-        let result = api.get_user_homepage(&uid).await;
-        println!("result {:?}", result);
+        let tweets_analysis_vec = search_tweets_analysis(&mut api).await;
+        for tweets_analysis in tweets_analysis_vec.unwrap() {
+            let pretty_json = serde_json::to_string_pretty(&tweets_analysis);
+            print!("{}", pretty_json.unwrap());
+        }
     }
 }
