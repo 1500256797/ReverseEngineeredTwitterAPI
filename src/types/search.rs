@@ -2,31 +2,31 @@
 extern crate serde_json;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Search {
     #[serde(rename = "data")]
     pub data: Data,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Data {
     #[serde(rename = "search_by_raw_query")]
     pub search_by_raw_query: SearchByRawQuery,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SearchByRawQuery {
     #[serde(rename = "search_timeline")]
     pub search_timeline: SearchTimeline,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SearchTimeline {
     #[serde(rename = "timeline")]
     pub timeline: Timeline,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Timeline {
     #[serde(rename = "instructions")]
     pub instructions: Option<Vec<Instruction>>,
@@ -35,7 +35,7 @@ pub struct Timeline {
     pub response_objects: ResponseObjects,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Instruction {
     #[serde(rename = "type")]
     pub instruction_type: String,
@@ -44,7 +44,7 @@ pub struct Instruction {
     pub entries: Option<Vec<Entry>>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Entry {
     #[serde(rename = "entryId")]
     pub entry_id: String,
@@ -56,7 +56,7 @@ pub struct Entry {
     pub content: Content,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Content {
     #[serde(rename = "entryType")]
     pub entry_type: Option<String>,
@@ -92,7 +92,7 @@ pub struct Content {
     pub cursor_type: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ContentClientEventInfo {
     #[serde(rename = "component")]
     component: String,
@@ -104,25 +104,25 @@ pub struct ContentClientEventInfo {
     details: Option<Details>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Details {
     #[serde(rename = "timelinesDetails")]
     timelines_details: TimelinesDetails,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TimelinesDetails {
     #[serde(rename = "controllerData")]
     controller_data: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FeedbackInfo {
     #[serde(rename = "feedbackKeys")]
     feedback_keys: Vec<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Footer {
     #[serde(rename = "displayType")]
     display_type: String,
@@ -134,7 +134,7 @@ pub struct Footer {
     landing_url: LandingUrl,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct LandingUrl {
     #[serde(rename = "url")]
     url: String,
@@ -143,7 +143,7 @@ pub struct LandingUrl {
     url_type: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Header {
     #[serde(rename = "displayType")]
     display_type: String,
@@ -155,7 +155,7 @@ pub struct Header {
     sticky: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ContentItemContent {
     #[serde(rename = "itemType")]
     pub item_type: String,
@@ -176,13 +176,13 @@ pub struct ContentItemContent {
     pub promoted_metadata: Option<PromotedMetadata>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Highlights {
     #[serde(rename = "textHighlights")]
     text_highlights: Vec<TextHighlight>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TextHighlight {
     #[serde(rename = "startIndex")]
     start_index: i64,
@@ -191,7 +191,7 @@ pub struct TextHighlight {
     end_index: i64,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PromotedMetadata {
     #[serde(rename = "advertiser_results")]
     pub advertiser_results: SerResults,
@@ -215,19 +215,19 @@ pub struct PromotedMetadata {
     click_tracking_info: ClickTrackingInfo,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct AdMetadataContainer {
     #[serde(rename = "renderLegacyWebsiteCard")]
     render_legacy_website_card: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SerResults {
     #[serde(rename = "result")]
     pub result: AdvertiserResultsResult,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct AdvertiserResultsResult {
     #[serde(rename = "__typename")]
     typename: String,
@@ -257,10 +257,10 @@ pub struct AdvertiserResultsResult {
     professional: Option<Professional>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UnmentionData {}
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PurpleLegacy {
     #[serde(rename = "can_dm")]
     can_dm: bool,
@@ -323,7 +323,7 @@ pub struct PurpleLegacy {
     possibly_sensitive: bool,
 
     #[serde(rename = "profile_banner_url")]
-    profile_banner_url: String,
+    profile_banner_url: Option<String>,
 
     #[serde(rename = "profile_image_url_https")]
     profile_image_url_https: String,
@@ -356,7 +356,7 @@ pub struct PurpleLegacy {
     verified_type: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Entities {
     #[serde(rename = "description")]
     description: Description,
@@ -365,13 +365,13 @@ pub struct Entities {
     url: Option<Description>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Description {
     #[serde(rename = "urls")]
     urls: Vec<Url>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Url {
     #[serde(rename = "display_url")]
     display_url: String,
@@ -386,7 +386,7 @@ pub struct Url {
     indices: Vec<i64>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Professional {
     #[serde(rename = "rest_id")]
     rest_id: String,
@@ -398,7 +398,7 @@ pub struct Professional {
     category: Vec<Category>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Category {
     #[serde(rename = "id")]
     id: i64,
@@ -410,13 +410,13 @@ pub struct Category {
     icon_name: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ClickTrackingInfo {
     #[serde(rename = "urlParams")]
     url_params: Vec<ExperimentValue>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ExperimentValue {
     #[serde(rename = "key")]
     key: String,
@@ -425,13 +425,13 @@ pub struct ExperimentValue {
     value: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TweetResults {
     #[serde(rename = "result")]
     pub result: TweetResultsResult,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TweetResultsResult {
     #[serde(rename = "__typename")]
     typename: Option<String>,
@@ -476,7 +476,7 @@ pub struct TweetResultsResult {
     quoted_status_result: Option<QuotedStatusResult>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Card {
     #[serde(rename = "rest_id")]
     rest_id: String,
@@ -485,7 +485,7 @@ pub struct Card {
     legacy: CardLegacy,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct CardLegacy {
     #[serde(rename = "binding_values")]
     binding_values: Vec<BindingValue>,
@@ -503,7 +503,7 @@ pub struct CardLegacy {
     user_refs_results: Vec<Option<serde_json::Value>>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BindingValue {
     #[serde(rename = "key")]
     key: String,
@@ -512,7 +512,7 @@ pub struct BindingValue {
     value: BindingValueValue,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BindingValueValue {
     #[serde(rename = "string_value")]
     string_value: Option<String>,
@@ -524,13 +524,13 @@ pub struct BindingValueValue {
     scribe_key: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct CardPlatform {
     #[serde(rename = "platform")]
     platform: Platform,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Platform {
     #[serde(rename = "audience")]
     audience: Audience,
@@ -539,13 +539,13 @@ pub struct Platform {
     device: Device,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Audience {
     #[serde(rename = "name")]
     name: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Device {
     #[serde(rename = "name")]
     name: String,
@@ -554,13 +554,13 @@ pub struct Device {
     version: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Core {
     #[serde(rename = "user_results")]
     user_results: SerResults,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PurpleEditControl {
     #[serde(rename = "edit_tweet_ids")]
     edit_tweet_ids: Option<Vec<String>>,
@@ -581,7 +581,7 @@ pub struct PurpleEditControl {
     edit_control_initial: Option<EditControlInitialClass>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct EditControlInitialClass {
     #[serde(rename = "edit_tweet_ids")]
     edit_tweet_ids: Vec<String>,
@@ -596,7 +596,7 @@ pub struct EditControlInitialClass {
     edits_remaining: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FluffyLegacy {
     #[serde(rename = "bookmark_count")]
     pub bookmark_count: i64,
@@ -668,7 +668,7 @@ pub struct FluffyLegacy {
     pub quoted_status_permalink: Option<QuotedStatusPermalink>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Entit {
     #[serde(rename = "media")]
     media: Option<Vec<EntitiesMedia>>,
@@ -686,7 +686,7 @@ pub struct Entit {
     symbols: Vec<Hashtag>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Hashtag {
     #[serde(rename = "indices")]
     indices: Vec<i64>,
@@ -695,7 +695,7 @@ pub struct Hashtag {
     text: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct EntitiesMedia {
     #[serde(rename = "display_url")]
     display_url: String,
@@ -740,19 +740,19 @@ pub struct EntitiesMedia {
     video_info: Option<VideoInfo>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct AdditionalMediaInfo {
     #[serde(rename = "monetizable")]
     monetizable: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ExtMediaAvailability {
     #[serde(rename = "status")]
     status: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Features {
     #[serde(rename = "large")]
     large: OrigClass,
@@ -770,13 +770,13 @@ pub struct Features {
     all: Option<All>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct All {
     #[serde(rename = "tags")]
     tags: Vec<Tag>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Tag {
     #[serde(rename = "user_id")]
     user_id: String,
@@ -791,13 +791,13 @@ pub struct Tag {
     tag_type: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct OrigClass {
     #[serde(rename = "faces")]
     faces: Vec<FocusRect>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FocusRect {
     #[serde(rename = "x")]
     x: i64,
@@ -812,7 +812,7 @@ pub struct FocusRect {
     w: i64,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct OriginalInfo {
     #[serde(rename = "height")]
     height: i64,
@@ -824,7 +824,7 @@ pub struct OriginalInfo {
     focus_rects: Vec<FocusRect>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Sizes {
     #[serde(rename = "large")]
     large: ThumbClass,
@@ -839,7 +839,7 @@ pub struct Sizes {
     thumb: ThumbClass,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ThumbClass {
     #[serde(rename = "h")]
     h: i64,
@@ -851,7 +851,7 @@ pub struct ThumbClass {
     resize: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct VideoInfo {
     #[serde(rename = "aspect_ratio")]
     aspect_ratio: Vec<i64>,
@@ -863,7 +863,7 @@ pub struct VideoInfo {
     variants: Vec<Variant>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Variant {
     #[serde(rename = "bitrate")]
     bitrate: Option<i64>,
@@ -875,7 +875,7 @@ pub struct Variant {
     url: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UserMention {
     #[serde(rename = "id_str")]
     id_str: String,
@@ -890,13 +890,13 @@ pub struct UserMention {
     indices: Vec<i64>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PurpleExtendedEntities {
     #[serde(rename = "media")]
     media: Vec<EntitiesMedia>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QuotedStatusPermalink {
     #[serde(rename = "url")]
     url: String,
@@ -908,13 +908,13 @@ pub struct QuotedStatusPermalink {
     display: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Scopes {
     #[serde(rename = "followers")]
     followers: bool,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NoteTweet {
     #[serde(rename = "is_expandable")]
     is_expandable: bool,
@@ -923,13 +923,13 @@ pub struct NoteTweet {
     note_tweet_results: NoteTweetResults,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NoteTweetResults {
     #[serde(rename = "result")]
     result: NoteTweetResultsResult,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NoteTweetResultsResult {
     #[serde(rename = "id")]
     id: String,
@@ -947,19 +947,19 @@ pub struct NoteTweetResultsResult {
     media: ResultMedia,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ResultMedia {
     #[serde(rename = "inline_media")]
     inline_media: Vec<Option<serde_json::Value>>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Richtext {
     #[serde(rename = "richtext_tags")]
     richtext_tags: Vec<RichtextTag>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct RichtextTag {
     #[serde(rename = "from_index")]
     from_index: i64,
@@ -971,7 +971,7 @@ pub struct RichtextTag {
     richtext_types: Vec<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PreviousCounts {
     #[serde(rename = "bookmark_count")]
     bookmark_count: i64,
@@ -989,13 +989,13 @@ pub struct PreviousCounts {
     retweet_count: i64,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QuotedStatusResult {
     #[serde(rename = "result")]
     result: QuotedStatusResultResult,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QuotedStatusResultResult {
     #[serde(rename = "__typename")]
     typename: Option<String>,
@@ -1028,7 +1028,7 @@ pub struct QuotedStatusResultResult {
     legacy: TentacledLegacy,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TentacledLegacy {
     #[serde(rename = "bookmark_count")]
     bookmark_count: i64,
@@ -1091,13 +1091,13 @@ pub struct TentacledLegacy {
     id_str: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FluffyExtendedEntities {
     #[serde(rename = "media")]
     media: Vec<PurpleMedia>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PurpleMedia {
     #[serde(rename = "display_url")]
     display_url: String,
@@ -1136,13 +1136,13 @@ pub struct PurpleMedia {
     original_info: OriginalInfo,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UnifiedCard {
     #[serde(rename = "card_fetch_state")]
     card_fetch_state: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Views {
     #[serde(rename = "count")]
     pub count: Option<String>,
@@ -1151,16 +1151,16 @@ pub struct Views {
     state: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ItemElement {
     #[serde(rename = "entryId")]
-    entry_id: String,
+    pub entry_id: String,
 
     #[serde(rename = "item")]
-    item: ItemItem,
+    pub item: ItemItem,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ItemItem {
     #[serde(rename = "itemContent")]
     pub item_content: ItemItemContent,
@@ -1169,7 +1169,7 @@ pub struct ItemItem {
     client_event_info: ContentClientEventInfo,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ItemItemContent {
     #[serde(rename = "itemType")]
     item_type: String,
@@ -1184,13 +1184,13 @@ pub struct ItemItemContent {
     user_display_type: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ResponseObjects {
     #[serde(rename = "feedbackActions")]
     feedback_actions: Vec<FeedbackAction>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FeedbackAction {
     #[serde(rename = "key")]
     key: String,
@@ -1199,7 +1199,7 @@ pub struct FeedbackAction {
     value: FeedbackActionValue,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FeedbackActionValue {
     #[serde(rename = "feedbackType")]
     feedback_type: String,
@@ -1226,7 +1226,7 @@ pub struct FeedbackActionValue {
     client_event_info: ValueClientEventInfo,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ValueClientEventInfo {
     #[serde(rename = "action")]
     action: String,

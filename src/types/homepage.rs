@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UserHomePage {
     #[serde(rename = "data")]
-    pub data: Data,
+    pub data: Option<Data>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

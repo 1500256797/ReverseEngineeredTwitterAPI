@@ -112,5 +112,6 @@ mod tests {
             let pretty_json = serde_json::to_string_pretty(&tweets_analysis);
             print!("{}", pretty_json.unwrap());
         }
+        // search(&mut api).await;
     }
 }

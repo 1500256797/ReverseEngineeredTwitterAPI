@@ -31,29 +31,28 @@ impl ReAPI {
 
         let mut tweets_analysis: Vec<TweetsAnalysis> = vec![];
 
-        for item in instructions {
-            if item.entries.is_none() {
+        for instruction in instructions {
+            if instruction.entries.is_none() {
                 continue;
             }
-            let entrys = item.entries.unwrap();
+            let entrys = instruction.entries.unwrap();
             for entry in entrys {
-                let content = entry.content;
-                if content.item_content.is_none() {
+                if entry.content.item_content.is_none() {
                     continue;
                 }
-                let item_content = content.item_content.unwrap();
-                let tweets_result = item_content.tweet_results;
-                let result = tweets_result.result;
-                let views = result.views;
-                let legacy = result.legacy;
-                if item_content.promoted_metadata.is_none() {
+                let tweets_results = entry.content.item_content.unwrap().tweet_results;
+
+                let views = tweets_results.result.views;
+
+                let legacy = tweets_results.result.legacy;
+                if entry.content.items.is_none() {
                     continue;
                 }
-                let advertiser_results_result = item_content
-                    .promoted_metadata
-                    .unwrap()
-                    .advertiser_results
-                    .result;
+                let item_element = entry.content.items.unwrap();
+                let first_item = item_element.first().unwrap();
+                let advertiser_results_result =
+                    first_item.item.item_content.user_results.result.clone();
+
                 let tweets_analysis_item = TweetsAnalysis {
                     views,
                     legacy,
@@ -106,6 +105,7 @@ impl ReAPI {
             .text()
             .await
             .unwrap();
+        println!("{}", text);
         let res: Search = serde_json::from_str(&text).unwrap();
         return Ok(res);
     }

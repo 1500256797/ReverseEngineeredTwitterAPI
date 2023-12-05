@@ -82,8 +82,10 @@ impl UserTweets for ReAPI {
             .await
             .unwrap();
         let res: UserHomePage = serde_json::from_str(&text).unwrap();
-
-        let timeline = res.data.user.result.timeline_v2;
+        if res.data.is_none() {
+            return Ok(true);
+        }
+        let timeline = res.data.unwrap().user.result.timeline_v2;
         let instructions = timeline.timeline.instructions;
         let timeline_add_entries = instructions;
 
