@@ -152,7 +152,7 @@ impl ReAPI {
         })
     }
 
-    pub fn load_from_cookies() -> Result<ReAPI, Box<dyn std::error::Error>> {
+    pub fn load_from_cookies_file() -> Result<ReAPI, Box<dyn std::error::Error>> {
         let file_path = "cookies.json";
 
         // Load the cookies from the file
