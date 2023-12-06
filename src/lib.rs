@@ -106,7 +106,7 @@ mod tests {
         // let mut api = ReAPI::new();
         // let loggined = login(&mut api).await;
 
-        let mut api = ReAPI::load_from_cookies().unwrap();
+        let mut api = ReAPI::load_from_cookies_file().unwrap();
         let tweets_analysis_vec = search_tweets_analysis(&mut api).await;
         for tweets_analysis in tweets_analysis_vec.unwrap() {
             let pretty_json = serde_json::to_string_pretty(&tweets_analysis);
