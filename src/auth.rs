@@ -73,7 +73,7 @@ pub struct VerifyCredentials {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-struct CookieData {
+pub struct CookieData {
     name: String,
     value: String,
 }
