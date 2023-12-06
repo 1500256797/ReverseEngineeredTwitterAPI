@@ -107,6 +107,8 @@ mod tests {
         // let loggined = login(&mut api).await;
 
         let mut api = ReAPI::load_from_cookies_file().unwrap();
+        let is_logged_in = api.is_logged_in().await;
+        assert!(is_logged_in);
         let tweets_analysis_vec = search_tweets_analysis(&mut api).await;
         for tweets_analysis in tweets_analysis_vec.unwrap() {
             let pretty_json = serde_json::to_string_pretty(&tweets_analysis);

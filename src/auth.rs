@@ -121,18 +121,22 @@ impl ReAPI {
     }
 
     pub async fn load_from_cookies_data(
-        cookie: &CookieData,
+        cookies: &Vec<CookieData>,
     ) -> Result<ReAPI, Box<dyn std::error::Error>> {
+        // cookie = "foo=bar; Domain=yolo.local";
         let mut csrf_token = "".to_string();
         // Create a new cookie jar and add the cookies to it
         let cookie_jar = reqwest::cookie::Jar::default();
-        // cookie = "foo=bar; Domain=yolo.local";
-        if cookie.name.eq("ct0") {
-            csrf_token = cookie.clone().value;
+        for cookie in cookies {
+            // cookie = "foo=bar; Domain=yolo.local";
+            if cookie.name.eq("ct0") {
+                csrf_token = cookie.clone().value;
+            }
+            let cookie_str = format!("{}={}; Domain=twitter.com", cookie.name, cookie.value);
+            let url = Url::parse("https://twitter.com")?;
+            cookie_jar.add_cookie_str(&cookie_str, &url);
         }
-        let cookie_str = format!("{}={}; Domain=twitter.com", cookie.name, cookie.value);
-        let url = Url::parse("https://twitter.com")?;
-        cookie_jar.add_cookie_str(&cookie_str, &url);
+
         // Create a reqwest client builder
         let cookie_jar_arc = Arc::new(cookie_jar);
         let client_builder = ClientBuilder::new().cookie_provider(cookie_jar_arc);
@@ -144,7 +148,6 @@ impl ReAPI {
                 return Err(err.into());
             }
         };
-
         Ok(ReAPI {
             client,
             csrf_token: csrf_token.to_string(),
@@ -168,6 +171,7 @@ impl ReAPI {
         let mut csrf_token = "".to_string();
         // Create a new cookie jar and add the cookies to it
         let cookie_jar = reqwest::cookie::Jar::default();
+        println!("cookies len: {}", cookies.len());
         for cookie in cookies {
             // cookie = "foo=bar; Domain=yolo.local";
             if cookie.name.eq("ct0") {

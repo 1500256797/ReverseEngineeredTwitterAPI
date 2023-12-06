@@ -320,7 +320,7 @@ pub struct PurpleLegacy {
     pinned_tweet_ids_str: Vec<String>,
 
     #[serde(rename = "possibly_sensitive")]
-    possibly_sensitive: bool,
+    possibly_sensitive: Option<bool>,
 
     #[serde(rename = "profile_banner_url")]
     profile_banner_url: Option<String>,
@@ -1010,7 +1010,7 @@ pub struct QuotedStatusResultResult {
     unmention_data: UnmentionData,
 
     #[serde(rename = "unified_card")]
-    unified_card: UnifiedCard,
+    unified_card: Option<UnifiedCard>,
 
     #[serde(rename = "edit_control")]
     edit_control: EditControlInitialClass,
@@ -1049,7 +1049,7 @@ pub struct TentacledLegacy {
     entities: Entit,
 
     #[serde(rename = "extended_entities")]
-    extended_entities: FluffyExtendedEntities,
+    extended_entities: Option<FluffyExtendedEntities>,
 
     #[serde(rename = "favorite_count")]
     favorite_count: i64,
@@ -1067,10 +1067,10 @@ pub struct TentacledLegacy {
     lang: Option<String>,
 
     #[serde(rename = "possibly_sensitive")]
-    possibly_sensitive: bool,
+    possibly_sensitive: Option<bool>,
 
     #[serde(rename = "possibly_sensitive_editable")]
-    possibly_sensitive_editable: bool,
+    possibly_sensitive_editable: Option<bool>,
 
     #[serde(rename = "quote_count")]
     quote_count: i64,
