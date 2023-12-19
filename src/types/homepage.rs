@@ -535,73 +535,73 @@ pub struct EditControlInitialClass {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FluffyLegacy {
     #[serde(rename = "bookmark_count")]
-    bookmark_count: i64,
+    pub bookmark_count: i64,
 
     #[serde(rename = "bookmarked")]
-    bookmarked: bool,
+    pub bookmarked: bool,
 
     #[serde(rename = "created_at")]
-    created_at: String,
+    pub created_at: String,
 
     #[serde(rename = "conversation_id_str")]
-    conversation_id_str: String,
+    pub conversation_id_str: String,
 
     #[serde(rename = "display_text_range")]
-    display_text_range: Vec<i64>,
+    pub display_text_range: Vec<i64>,
 
     #[serde(rename = "entities")]
-    entities: Entit,
+    pub entities: Entit,
 
     #[serde(rename = "favorite_count")]
-    favorite_count: i64,
+    pub favorite_count: i64,
 
     #[serde(rename = "favorited")]
-    favorited: bool,
+    pub favorited: bool,
 
     #[serde(rename = "full_text")]
     pub full_text: String,
 
     #[serde(rename = "is_quote_status")]
-    is_quote_status: bool,
+    pub is_quote_status: bool,
 
     #[serde(rename = "lang")]
-    lang: String,
+    pub lang: String,
 
     #[serde(rename = "quote_count")]
-    quote_count: i64,
+    pub quote_count: i64,
 
     #[serde(rename = "quoted_status_id_str")]
-    quoted_status_id_str: Option<String>,
+    pub quoted_status_id_str: Option<String>,
 
     #[serde(rename = "quoted_status_permalink")]
-    quoted_status_permalink: Option<QuotedStatusPermalink>,
+    pub quoted_status_permalink: Option<QuotedStatusPermalink>,
 
     #[serde(rename = "reply_count")]
-    reply_count: i64,
+    pub reply_count: i64,
 
     #[serde(rename = "retweet_count")]
-    retweet_count: i64,
+    pub retweet_count: i64,
 
     #[serde(rename = "retweeted")]
-    retweeted: bool,
+    pub retweeted: bool,
 
     #[serde(rename = "user_id_str")]
-    user_id_str: String,
+    pub user_id_str: String,
 
     #[serde(rename = "id_str")]
-    id_str: String,
+    pub id_str: String,
 
     #[serde(rename = "retweeted_status_result")]
-    retweeted_status_result: Option<RetweetedStatusResult>,
+    pub retweeted_status_result: Option<RetweetedStatusResult>,
 
     #[serde(rename = "possibly_sensitive")]
-    possibly_sensitive: Option<bool>,
+    pub possibly_sensitive: Option<bool>,
 
     #[serde(rename = "possibly_sensitive_editable")]
-    possibly_sensitive_editable: Option<bool>,
+    pub possibly_sensitive_editable: Option<bool>,
 
     #[serde(rename = "extended_entities")]
-    extended_entities: Option<ExtendedEntities>,
+    pub extended_entities: Option<ExtendedEntities>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
