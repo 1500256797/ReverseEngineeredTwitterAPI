@@ -82,7 +82,7 @@ mod tests {
 
     async fn check_msg(
         api: &mut ReAPI,
-    ) -> Result<(bool, Option<FluffyLegacy>), Box<dyn std::error::Error>> {
+    ) -> Result<(bool, Option<FluffyLegacy>, bool), Box<dyn std::error::Error>> {
         let content = "#rido".to_string();
         let uid = "1507631541303713793".to_string();
         let res = api.get_user_latest_tweets(&uid, &content).await;

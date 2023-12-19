@@ -18,7 +18,7 @@ pub trait UserTweets {
         &self,
         uid: &String,
         msg: &String,
-    ) -> Result<(bool, Option<FluffyLegacy>), Box<dyn Error>>;
+    ) -> Result<(bool, Option<FluffyLegacy>, bool), Box<dyn Error>>;
 }
 
 #[async_trait]
@@ -57,7 +57,7 @@ impl UserTweets for ReAPI {
         &self,
         uid: &String,
         msg: &String,
-    ) -> Result<(bool, Option<FluffyLegacy>), Box<dyn Error>> {
+    ) -> Result<(bool, Option<FluffyLegacy>, bool), Box<dyn Error>> {
         let variables = json!(
             {"userId":uid.to_string(),"count":20,"includePromotedContent":true,"withQuickPromoteEligibilityTweetFields":true,"withVoice":true,"withV2Timeline":true}
         );
@@ -86,9 +86,8 @@ impl UserTweets for ReAPI {
             .unwrap();
 
         let res: UserHomePage = serde_json::from_str(&text).unwrap();
-        let res_clone = res.clone();
         if res.data.is_none() {
-            return Ok((true, None));
+            return Ok((true, None, false));
         }
         let timeline = res.data.unwrap().user.result.timeline_v2;
         let instructions = timeline.timeline.instructions;
@@ -106,19 +105,30 @@ impl UserTweets for ReAPI {
                 let content = e.content.item_content;
                 // if content is some
                 if let Some(item) = content {
+                    let is_verified = item
+                        .tweet_results
+                        .result
+                        .clone()
+                        .unwrap()
+                        .core
+                        .clone()
+                        .user_results
+                        .unwrap()
+                        .result
+                        .is_blue_verified;
                     let tweet = item.tweet_results.result.clone().unwrap().legacy;
                     let full_text = item.tweet_results.result.unwrap().legacy.full_text;
                     println!("{}: {}", twitter_id, full_text);
                     // check if content contains the content
                     if full_text.contains(msg.as_str()) {
-                        return Ok((true, Some(tweet)));
+                        return Ok((true, Some(tweet), is_verified));
                     } else {
-                        return Ok((false, None));
+                        return Ok((false, None, is_verified));
                     }
                 }
             }
         }
-        Ok((true, None))
+        Ok((true, None, false))
     }
     async fn get_user_tweets(&self, uid: &String) -> Result<UserTweetsResp, Box<dyn Error>> {
         let variables = json!(

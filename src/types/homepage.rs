@@ -193,7 +193,7 @@ pub struct PurpleResult {
     rest_id: String,
 
     #[serde(rename = "core")]
-    core: PurpleCore,
+    pub core: PurpleCore,
 
     #[serde(rename = "unmention_data")]
     unmention_data: UnmentionData,
@@ -352,40 +352,40 @@ pub struct Device {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PurpleCore {
     #[serde(rename = "user_results")]
-    user_results: Option<PurpleUserResults>,
+    pub user_results: Option<PurpleUserResults>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PurpleUserResults {
     #[serde(rename = "result")]
-    result: FluffyResult,
+    pub result: FluffyResult,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct FluffyResult {
     #[serde(rename = "__typename")]
-    typename: String,
+    pub typename: String,
 
     #[serde(rename = "id")]
-    id: String,
+    pub id: String,
 
     #[serde(rename = "rest_id")]
-    rest_id: String,
+    pub rest_id: String,
 
     #[serde(rename = "affiliates_highlighted_label")]
-    affiliates_highlighted_label: UnmentionData,
+    pub affiliates_highlighted_label: UnmentionData,
 
     #[serde(rename = "has_graduated_access")]
-    has_graduated_access: bool,
+    pub has_graduated_access: bool,
 
     #[serde(rename = "is_blue_verified")]
-    is_blue_verified: bool,
+    pub is_blue_verified: bool,
 
     #[serde(rename = "profile_image_shape")]
-    profile_image_shape: String,
+    pub profile_image_shape: String,
 
     #[serde(rename = "legacy")]
-    legacy: PurpleLegacy,
+    pub legacy: PurpleLegacy,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
