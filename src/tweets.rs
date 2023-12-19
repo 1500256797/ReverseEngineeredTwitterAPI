@@ -15,7 +15,7 @@ pub trait UserTweets {
         &self,
         uid: &String,
         msg: &String,
-    ) -> Result<bool, Box<dyn Error>>;
+    ) -> Result<(bool, Option<UserHomePage>), Box<dyn Error>>;
 }
 
 #[async_trait]
@@ -54,7 +54,7 @@ impl UserTweets for ReAPI {
         &self,
         uid: &String,
         msg: &String,
-    ) -> Result<bool, Box<dyn Error>> {
+    ) -> Result<(bool, Option<UserHomePage>), Box<dyn Error>> {
         let variables = json!(
             {"userId":uid.to_string(),"count":20,"includePromotedContent":true,"withQuickPromoteEligibilityTweetFields":true,"withVoice":true,"withV2Timeline":true}
         );
@@ -81,9 +81,11 @@ impl UserTweets for ReAPI {
             .text()
             .await
             .unwrap();
+
         let res: UserHomePage = serde_json::from_str(&text).unwrap();
+        let res_clone = res.clone();
         if res.data.is_none() {
-            return Ok(true);
+            return Ok((true, None));
         }
         let timeline = res.data.unwrap().user.result.timeline_v2;
         let instructions = timeline.timeline.instructions;
@@ -105,15 +107,14 @@ impl UserTweets for ReAPI {
                     println!("{}: {}", twitter_id, full_text);
                     // check if content contains the content
                     if full_text.contains(msg.as_str()) {
-                        return Ok(true);
+                        return Ok((true, Some(res_clone)));
                     } else {
-                        return Ok(false);
+                        return Ok((false, None));
                     }
                 }
             }
         }
-
-        Ok(true)
+        Ok((true, None))
     }
     async fn get_user_tweets(&self, uid: &String) -> Result<UserTweetsResp, Box<dyn Error>> {
         let variables = json!(

@@ -49,7 +49,7 @@ mod tests {
     use crate::{
         relation::Relation,
         tweets::UserTweets,
-        types::{search::Search, tweets_analysis::TweetsAnalysis},
+        types::{homepage::UserHomePage, search::Search, tweets_analysis::TweetsAnalysis},
     };
 
     use super::{
@@ -76,10 +76,13 @@ mod tests {
         api.search_tweets_analysis(content, cursor).await
     }
 
-    async fn check_msg(api: &mut ReAPI) -> Result<bool, Box<dyn std::error::Error>> {
+    async fn check_msg(
+        api: &mut ReAPI,
+    ) -> Result<(bool, Option<UserHomePage>), Box<dyn std::error::Error>> {
         let content = "#rido".to_string();
         let uid = "1507631541303713793".to_string();
-        api.get_user_latest_tweets(&uid, &content).await
+        let res = api.get_user_latest_tweets(&uid, &content).await;
+        res
     }
 
     #[tokio::test]
