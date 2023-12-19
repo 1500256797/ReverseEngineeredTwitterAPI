@@ -3,7 +3,10 @@ use serde_json::json;
 use std::error::Error;
 
 use crate::{
-    types::{homepage::UserHomePage, usertweets::UserTweetsResp},
+    types::{
+        homepage::{FluffyLegacy, UserHomePage},
+        usertweets::UserTweetsResp,
+    },
     ReAPI, BEARER_TOKEN,
 };
 
@@ -15,7 +18,7 @@ pub trait UserTweets {
         &self,
         uid: &String,
         msg: &String,
-    ) -> Result<(bool, Option<UserHomePage>), Box<dyn Error>>;
+    ) -> Result<(bool, Option<FluffyLegacy>), Box<dyn Error>>;
 }
 
 #[async_trait]
@@ -54,7 +57,7 @@ impl UserTweets for ReAPI {
         &self,
         uid: &String,
         msg: &String,
-    ) -> Result<(bool, Option<UserHomePage>), Box<dyn Error>> {
+    ) -> Result<(bool, Option<FluffyLegacy>), Box<dyn Error>> {
         let variables = json!(
             {"userId":uid.to_string(),"count":20,"includePromotedContent":true,"withQuickPromoteEligibilityTweetFields":true,"withVoice":true,"withV2Timeline":true}
         );
@@ -103,11 +106,12 @@ impl UserTweets for ReAPI {
                 let content = e.content.item_content;
                 // if content is some
                 if let Some(item) = content {
+                    let tweet = item.tweet_results.result.clone().unwrap().legacy;
                     let full_text = item.tweet_results.result.unwrap().legacy.full_text;
                     println!("{}: {}", twitter_id, full_text);
                     // check if content contains the content
                     if full_text.contains(msg.as_str()) {
-                        return Ok((true, Some(res_clone)));
+                        return Ok((true, Some(tweet)));
                     } else {
                         return Ok((false, None));
                     }
