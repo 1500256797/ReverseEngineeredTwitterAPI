@@ -120,7 +120,8 @@ mod tests {
         assert!(is_logged_in);
         // like tweet
         let tweet_id = "1739460075801149771".to_string();
-        let res = api.like_tweet(&tweet_id).await;
+        let referer = "https://twitter.com/MyHongKongDoll/status/1739460075801149771".to_string();
+        let res = api.like_tweet(&tweet_id, &referer).await;
         if res.is_err() {
             println!("err {:?}", res);
         }
