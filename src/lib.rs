@@ -1,4 +1,5 @@
 pub mod auth;
+pub mod favorite_tweet;
 pub mod relation;
 pub mod search;
 pub mod tweets;
@@ -47,6 +48,7 @@ mod tests {
     use serde_json::json;
 
     use crate::{
+        favorite_tweet::FavoriteTweets,
         relation::Relation,
         tweets::UserTweets,
         types::{
@@ -116,11 +118,12 @@ mod tests {
         let mut api = ReAPI::load_from_cookies_file().unwrap();
         let is_logged_in = api.is_logged_in().await;
         assert!(is_logged_in);
-        let tweets_analysis_vec = search_tweets_analysis(&mut api).await;
-        for tweets_analysis in tweets_analysis_vec.unwrap() {
-            let pretty_json = serde_json::to_string_pretty(&tweets_analysis);
-            print!("{}", pretty_json.unwrap());
+        // like tweet
+        let tweet_id = "1738177046713704644".to_string();
+        let res = api.like_tweet(&tweet_id).await;
+        if res.is_err() {
+            println!("err {:?}", res);
         }
-        // search(&mut api).await;
+        println!("res {:?}", res);
     }
 }
