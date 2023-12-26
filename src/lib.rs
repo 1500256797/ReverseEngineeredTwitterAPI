@@ -119,7 +119,7 @@ mod tests {
         let is_logged_in = api.is_logged_in().await;
         assert!(is_logged_in);
         // like tweet
-        let tweet_id = "1738177046713704644".to_string();
+        let tweet_id = "1739460075801149771".to_string();
         let res = api.like_tweet(&tweet_id).await;
         if res.is_err() {
             println!("err {:?}", res);

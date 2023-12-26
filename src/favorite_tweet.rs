@@ -1,4 +1,5 @@
 use async_trait::async_trait;
+use reqwest::header::{HeaderMap, HeaderValue, ORIGIN, REFERER, USER_AGENT};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::error::Error;
@@ -18,11 +19,39 @@ impl FavoriteTweets for ReAPI {
         let variables = json!(
             {"variables":{"tweet_id":tweet_id.to_string()},"queryId":"lI07N6Otwv1PhnEgXILM7A"}
         );
+
+        let mut headers = HeaderMap::new();
+        headers.insert(
+            "Authorization",
+            HeaderValue::from_str(&format!("Bearer {}", BEARER_TOKEN)).unwrap(),
+        );
+        headers.insert(
+            "X-CSRF-Token",
+            HeaderValue::from_str(&self.csrf_token).unwrap(),
+        );
+        headers.insert(ORIGIN, HeaderValue::from_static("https://twitter.com"));
+        headers.insert(
+            REFERER,
+            HeaderValue::from_static(
+                "https://twitter.com/MyHongKongDoll/status/1739460075801149771",
+            ),
+        );
+        headers.insert(USER_AGENT, HeaderValue::from_static("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"));
+        headers.insert(
+            "Sec-Ch-Ua",
+            HeaderValue::from_static(
+                r#""Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120""#,
+            ),
+        );
+        headers.insert("Sec-Ch-Ua-Mobile", HeaderValue::from_static("?0"));
+        headers.insert("Sec-Ch-Ua-Platform", HeaderValue::from_static(r#""macOS""#));
+        headers.insert("Sec-Fetch-Dest", HeaderValue::from_static("empty"));
+        headers.insert("Sec-Fetch-Mode", HeaderValue::from_static("cors"));
+        headers.insert("Sec-Fetch-Site", HeaderValue::from_static("same-origin"));
         let req = self
             .client
             .post(url)
-            .header("Authorization", format!("Bearer {}", BEARER_TOKEN))
-            .header("X-CSRF-Token", self.csrf_token.to_owned())
+            .headers(headers)
             .json(&variables)
             .build()
             .unwrap();
