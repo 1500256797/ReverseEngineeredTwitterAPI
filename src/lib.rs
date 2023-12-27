@@ -1,4 +1,5 @@
 pub mod auth;
+pub mod create;
 pub mod favorite_tweet;
 pub mod relation;
 pub mod search;
@@ -48,6 +49,7 @@ mod tests {
     use serde_json::json;
 
     use crate::{
+        create::FriendshipCreate,
         favorite_tweet::FavoriteTweets,
         relation::Relation,
         tweets::UserTweets,
@@ -120,8 +122,12 @@ mod tests {
         assert!(is_logged_in);
         // like tweet
         let tweet_id = "1739460075801149771".to_string();
-        let referer = "https://twitter.com/MyHongKongDoll/status/1739460075801149771".to_string();
-        let res = api.like_tweet(&tweet_id, &referer).await;
+        // let referer = "https://twitter.com/MyHongKongDoll/status/1739460075801149771".to_string();
+        let referer = "https://twitter.com/nodemonkes".to_string();
+        // let res = api.like_tweet(&tweet_id, &referer).await;
+        let res = api
+            .friendship_create(&"1624239100277714944".to_string(), &referer)
+            .await;
         if res.is_err() {
             println!("err {:?}", res);
         }
