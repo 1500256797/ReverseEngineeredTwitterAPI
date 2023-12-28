@@ -3,6 +3,7 @@ pub mod create;
 pub mod favorite_tweet;
 pub mod relation;
 pub mod search;
+pub mod tweet_detail;
 pub mod tweets;
 pub mod types;
 use reqwest::Client;
@@ -52,6 +53,7 @@ mod tests {
         create::FriendshipCreate,
         favorite_tweet::FavoriteTweets,
         relation::Relation,
+        tweet_detail::TweetDetail,
         tweets::UserTweets,
         types::{
             homepage::{FluffyLegacy, UserHomePage},
@@ -114,17 +116,16 @@ mod tests {
 
     #[tokio::test]
     async fn test_new_from_cookies_file() {
-        // let mut api = ReAPI::new();
-        // let loggined = login(&mut api).await;
-
         let mut api = ReAPI::load_from_cookies_file().unwrap();
         let is_logged_in = api.is_logged_in().await;
         assert!(is_logged_in);
-        // like tweet
-        let tweet_id = "1739460075801149771".to_string();
-        // let referer = "https://twitter.com/MyHongKongDoll/status/1739460075801149771".to_string();
+    }
+
+    #[tokio::test]
+    async fn test_create_friendship() {
+        let mut api = ReAPI::load_from_cookies_file().unwrap();
+        let _is_logged_in = api.is_logged_in().await;
         let referer = "https://twitter.com/nodemonkes".to_string();
-        // let res = api.like_tweet(&tweet_id, &referer).await;
         let res = api
             .friendship_create(&"1624239100277714944".to_string(), &referer)
             .await;
@@ -132,5 +133,31 @@ mod tests {
             println!("err {:?}", res);
         }
         println!("res {:?}", res);
+    }
+
+    #[tokio::test]
+    async fn test_like_tweet() {
+        let mut api = ReAPI::load_from_cookies_file().unwrap();
+        let _is_logged_in = api.is_logged_in().await;
+        let tweet_id = "1739460075801149771".to_string();
+        let referer = "https://twitter.com/MyHongKongDoll/status/1739460075801149771".to_string();
+        let res = api.like_tweet(&tweet_id, &referer).await;
+        if res.is_err() {
+            println!("err {:?}", res);
+        }
+        println!("res {:?}", res);
+    }
+
+    #[tokio::test]
+    async fn test_get_tweet_detail() -> Result<(), anyhow::Error> {
+        let mut api = ReAPI::load_from_cookies_file().unwrap();
+        let _is_logged_in = api.is_logged_in().await;
+        let referer = "https://twitter.com/MyHongKongDoll/status/1739460075801149771".to_string();
+        let res = api.get_tweet_detail(&referer, &referer).await;
+        if res.is_err() {
+            println!("err {:?}", res);
+        }
+        println!("{}", serde_json::to_string_pretty(&res.unwrap()).unwrap());
+        Ok(())
     }
 }
