@@ -36,7 +36,12 @@ impl Relation for ReAPI {
         while is_continue {
             // if cursor is not empty, then use cursor
             let res: FollowingResp = self.get_following(uid, cursor.clone()).await?;
-            let result = res.data.user.result.unwrap();
+            let result = res.data.user.result;
+            if result.is_none() {
+                println!("result is none , so can not get following list");
+                return Ok(false);
+            }
+            let result = result.unwrap();
             result
                 .timeline
                 .timeline
@@ -179,7 +184,7 @@ mod test_telation {
 
     #[tokio::test]
     async fn test_user_follow_target_user() {
-        let uid = "1439140186378567683".to_string();
+        let uid = "1366716022426718208".to_string();
         let target_uid = "1456507428208398336".to_string();
         let mut api = ReAPI::new();
         let _loggined = login(&mut api).await;
