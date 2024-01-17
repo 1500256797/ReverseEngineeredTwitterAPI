@@ -280,7 +280,7 @@ pub struct Legacy {
     pub following: Option<bool>,
 
     #[serde(rename = "verified_type")]
-    pub verified_type: Option<Type>,
+    pub verified_type: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -319,7 +319,7 @@ pub struct Professional {
     pub rest_id: String,
 
     #[serde(rename = "professional_type")]
-    pub professional_type: Type,
+    pub professional_type: String,
 
     #[serde(rename = "category")]
     pub category: Vec<Category>,
